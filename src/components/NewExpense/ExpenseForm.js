@@ -5,6 +5,7 @@ const ExpenseForm = (props) => {
   const [enteredTitle, setEnteredTitle] = useState("");
   const [enteredAmount, setAmount] = useState("");
   const [enteredDate, setDate] = useState("");
+  const [formVisible, setFormVisible] = useState(false);
 
   // const [userInput, setUserInput] = useState({
   //   enteredTitle: "",
@@ -14,10 +15,10 @@ const ExpenseForm = (props) => {
 
   const titleChangeHandler = (event) => {
     setEnteredTitle(event.target.value);
-  //   setUserInput({
-  //     ...userInput,
-  //     eneteredTitle: event.target.value,
-  //   });
+    //   setUserInput({
+    //     ...userInput,
+    //     eneteredTitle: event.target.value,
+    //   });
   };
 
   const amountChangeHandler = (event) => {
@@ -27,17 +28,17 @@ const ExpenseForm = (props) => {
     //   eneteredAmount: event.target.value,
     // });
 
-  //   setUserInput((prevState) => {
-  //     return {...prevState, enteredTitle: event.target.value};
-  //   });
+    //   setUserInput((prevState) => {
+    //     return {...prevState, enteredTitle: event.target.value};
+    //   });
   };
 
   const dateChangeHandler = (event) => {
     setDate(event.target.value);
-  //   setUserInput({
-  //     ...userInput,
-  //     eneteredDate: event.target.value,
-  //   });
+    //   setUserInput({
+    //     ...userInput,
+    //     eneteredDate: event.target.value,
+    //   });
   };
 
   const submitHandler = (event) => {
@@ -46,21 +47,32 @@ const ExpenseForm = (props) => {
     const expenseData = {
       title: enteredTitle,
       amount: enteredAmount,
-      date: new Date(enteredDate)
+      date: new Date(enteredDate),
     };
 
     props.onSaveExpenseData(expenseData);
     setEnteredTitle("");
     setAmount("");
     setDate("");
+    setFormVisible(false);
   };
 
-  return (
-    <form onSubmit={submitHandler}>
+  const formHandler = () => {
+    setFormVisible(true);
+  };
+
+  let expenseForm = (<button onClick={formHandler}>Add New Expense</button>)
+
+  if (formVisible === true) {
+    expenseForm = (<form onSubmit={submitHandler}>
       <div className="new-expense__controls">
         <div className="new-expense__control">
           <label>Title</label>
-          <input type="text" value={enteredTitle} onChange={titleChangeHandler} />
+          <input
+            type="text"
+            value={enteredTitle}
+            onChange={titleChangeHandler}
+          />
         </div>
         <div className="new-expense__control">
           <label>Amount</label>
@@ -84,9 +96,16 @@ const ExpenseForm = (props) => {
         </div>
       </div>
       <div className="new-expense__actions">
+      <button onClick={() => setFormVisible(false)}>Cancel</button>
         <button type="submit">Add Expense</button>
       </div>
-    </form>
+    </form>)
+  }
+
+  return (
+    <div>
+     {expenseForm}
+    </div>
   );
 };
 
